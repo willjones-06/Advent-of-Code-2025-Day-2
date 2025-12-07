@@ -12,8 +12,8 @@ char p;
 uint64_t solution = 0;
 uint64_t num1;
 uint64_t num2;
-uint64_t fhalf;
-uint64_t shalf;
+int fhalf;
+int shalf;
 char p1;
 
 void printBinaryChar(char p){
@@ -82,15 +82,14 @@ int main(){
     printf("Num2: %u\n", num2);
     //COMPUTE
     for(uint64_t j = num1; j <= num2; j++){
-
-      int digits = countDigits(j);
-      if((digits % 2) == 0){
+      
+      if((countDigits(j) % 2) == 0){
         
 
 	int digits = countDigits(j);
 
-	char strNum[digits + 1];
-	sprintf(strNum, "%" PRIu64, j);
+	char strNum[digits];
+	sprintf(strNum, "%u", j);
 
 
 	fhalf = 0;
@@ -105,7 +104,7 @@ int main(){
 	printf("Shalf: %d\n", shalf);
 	if(fhalf == shalf){
 	  
-	  solution = solution + j;
+	  solution = solution = j;
 	}
 	
 
