@@ -1,0 +1,123 @@
+#include <stdio.h>
+#include <ctype.h>
+#include <stdlib.h>
+#include <stdint.h>
+#include <string.h>
+#include <inttypes.h>
+
+
+
+int endFile = 0;
+char p;
+uint64_t solution = 0;
+uint64_t num1;
+uint64_t num2;
+uint64_t fhalf;
+uint64_t shalf;
+char p1;
+
+void printBinaryChar(char p){
+  for(int i = 7; i >= 0; i--){
+    if(p & 1 << i){
+      putchar('1');
+    }
+    else
+      putchar('0');
+  }
+  putchar('\n');
+}
+
+int countDigits(uint64_t i){
+
+  int returnvalue = 1;
+  while(i >= 10){
+    i /= 10;
+    returnvalue++;
+  }
+  return returnvalue;
+  
+}
+
+
+int main(){
+  
+
+  char *filename = "src/input.txt";
+  FILE *fp = fopen(filename, "r");
+  
+
+  if(fp == NULL){
+    printf("Can't Open File");
+    return -1;
+  }
+  
+  while(endFile != 1){
+
+    //READ NUM1
+    num1 = 0;
+  
+    while((p = fgetc(fp)) != '-'){
+      num1 = (num1 * 10) + (p - '0');
+      //printf("Num1: %u\n", num1);
+    }
+  
+    //READNUM 2
+    num2 = 0;
+
+    p1 = fgetc(fp);
+
+    while(p1 != EOF && p1 != ',' && p1 != 255 && p1 != 10){
+      num2 = (num2 * 10) + (p1 - '0');
+      //printf("Num2: %u\n", num2);
+      p1 = fgetc(fp);
+      //printf("P1: %c\n", p1);
+      //printBinaryChar(p1);
+    }
+    if(p1 == EOF || p1 == 255 || p1 == 10){
+      endFile = 1;
+    }
+  
+    
+    printf("Num1: %u\n", num1);
+    printf("Num2: %u\n", num2);
+    //COMPUTE
+    for(uint64_t j = num1; j <= num2; j++){
+      
+      if((countDigits(j) % 2) == 0){
+        
+
+	int digits = countDigits(j);
+
+	char strNum[digits];
+	sprintf(strNum, "%u", j);
+
+
+	fhalf = 0;
+	for(int i = 0; i < digits / 2; i++){
+	  fhalf = (fhalf * 10) + (strNum[i] - '0');
+	}
+	printf("Fhalf: %d\n", fhalf);
+	shalf = 0;
+	for(int i = (digits / 2); i < digits; i++){
+	  shalf = (shalf * 10) + (strNum[i] - '0');
+	}
+	printf("Shalf: %d\n", shalf);
+	if(fhalf == shalf){
+	  
+	  solution = solution + j;
+	}
+	
+
+	} //if num is splitable;
+
+      
+    }//for all num in-between
+
+    printf("Current Solution: %u\n", solution);
+  } //while endfile != 1;
+
+  printf("The Solution is THIS: %" PRIu64, solution);
+  return 0;
+  
+}
+
